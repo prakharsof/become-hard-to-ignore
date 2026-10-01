@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Magnetic Mindset &amp; Presence OS</title>
+<style>
+:root{--bg:#12100d;--sf:#1b1712;--sf2:#241e17;--ln:#332b21;--tx:#ece4d6;--mu:#a09482;--gd:#cfaa62;--br:#8c6a3a;--rx:#d0694f;--ex:#8aa3bd;--ok:#d9b56d;--serif:Georgia,"Times New Roman",serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 var(--sans);padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))}
+button,textarea,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--gd);outline-offset:2px}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+header{padding:calc(28px + env(safe-area-inset-top,0px)) 0 18px;border-bottom:1px solid var(--ln)}
+h1{font:400 clamp(26px,6vw,38px)/1.15 var(--serif);margin:0 0 6px;letter-spacing:.2px}
+header p{margin:0;color:var(--mu);max-width:52ch}
+.streak{display:flex;align-items:baseline;gap:14px;margin-top:18px;flex-wrap:wrap}
+.streak b{font:400 54px/1 var(--serif);color:var(--gd)}
+.streak span{color:var(--mu)}
+.week{display:flex;gap:6px;margin-left:auto}
+.dot{width:26px;height:26px;border-radius:50%;border:1px solid var(--ln);display:grid;place-items:center;font-size:11px;color:var(--mu)}
+.dot.on{background:var(--gd);border-color:var(--gd);color:#1a1409;font-weight:700}
+.dot.today{border-color:var(--br)}
+nav{position:sticky;top:0;z-index:5;background:rgba(18,16,13,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--ln);padding-top:env(safe-area-inset-top,0px)}
+nav .wrap{display:flex;gap:4px;overflow-x:auto}
+nav button{background:none;border:0;border-bottom:2px solid transparent;padding:14px 14px;color:var(--mu);white-space:nowrap}
+nav button[aria-selected=true]{color:var(--gd);border-color:var(--gd)}
+section{padding:26px 0}
+section[hidden]{display:none}
+h2{font:400 24px/1.2 var(--serif);margin:0 0 6px}
+.lead{color:var(--mu);margin:0 0 22px;max-width:60ch}
+.pillar{border-left:2px solid var(--br);padding:4px 0 4px 18px;margin-bottom:30px}
+.pillar h3{font:400 19px var(--serif);margin:0;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.pillar h3 small{font:13px var(--sans);color:var(--mu)}
+.pillar h3 small.full{color:var(--gd)}
+.pillar p{margin:4px 0 10px;color:var(--mu);font-size:14px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--ln);cursor:pointer}
+.chk input{appearance:none;-webkit-appearance:none;flex:none;width:24px;height:24px;margin:1px 0 0;border:1.5px solid var(--br);border-radius:6px;display:grid;place-items:center;cursor:pointer;background:transparent}
+.chk input:checked{background:var(--gd);border-color:var(--gd)}
+.chk input:checked::after{content:"";width:6px;height:11px;border:solid #1a1409;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.chk input:checked+span{color:var(--mu);text-decoration:line-through;text-decoration-color:var(--br)}
+.meta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;color:var(--mu);font-size:14px}
+.btn{background:var(--gd);color:#1a1409;border:0;border-radius:8px;padding:12px 20px;font-weight:600}
+.btn:hover{background:#dcb972}
+.btn.ghost{background:none;color:var(--tx);border:1px solid var(--ln)}
+.btn.ghost:hover{border-color:var(--br)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{background:none;border:1px solid var(--ln);color:var(--mu);border-radius:20px;padding:7px 14px;font-size:14px}
+.chip[aria-pressed=true]{border-color:var(--gd);color:var(--gd);background:rgba(207,170,98,.08)}
+.say{font:italic 22px/1.35 var(--serif);margin:6px 0 4px;padding:4px 0 4px 16px;border-left:2px solid var(--gd)}
+.ctx{color:var(--mu);font-size:14px;margin:0 0 16px}
+textarea{width:100%;min-height:110px;background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:12px;resize:vertical}
+textarea:focus{border-color:var(--br);outline:none}
+.row{display:flex;gap:10px;margin:12px 0;flex-wrap:wrap}
+.res{background:var(--sf);border:1px solid var(--ln);border-left:4px solid var(--gd);border-radius:8px;padding:18px;margin-top:18px}
+.res.r{border-left-color:var(--rx)}.res.e{border-left-color:var(--ex)}.res.n{border-left-color:var(--mu)}
+.res h3{font:400 21px var(--serif);margin:0 0 6px}
+.res h4{font:600 14px var(--sans);margin:16px 0 4px;color:var(--gd)}
+.res ul{margin:0;padding-left:20px;color:var(--tx)}
+.res p{margin:0}
+.meter{display:grid;grid-template-columns:110px 1fr;gap:4px 12px;align-items:center;font-size:13px;color:var(--mu);margin:12px 0}
+.bar{height:6px;background:var(--sf2);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;transition:width .5s}
+.model{font:italic 17px var(--serif);color:var(--tx)}
+input[type=search]{width:100%;background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:12px 14px;margin-bottom:12px}
+input[type=search]:focus{border-color:var(--br);outline:none}
+details{border-top:1px solid var(--ln);padding:14px 0}
+details:last-child{border-bottom:1px solid var(--ln)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:baseline;font:400 18px var(--serif)}
+summary::-webkit-details-marker{display:none}
+summary small{font:13px var(--sans);color:var(--br);flex:none}
+details[open] summary{color:var(--gd)}
+details p{margin:10px 0 0;color:var(--tx)}
+details p.dr{color:var(--mu);font-size:15px}
+details p.dr b{color:var(--gd);font-weight:600}
+.empty{color:var(--mu);padding:20px 0}
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:6;background:var(--gd);color:#1a1409;border:0;border-radius:30px;padding:14px 22px;font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+.ov{position:fixed;inset:0;z-index:20;background:rgba(10,8,6,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.ov[hidden]{display:none}
+.stage{position:relative;width:260px;height:260px;display:grid;place-items:center;margin:20px 0}
+.stage svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.stage circle{fill:none;stroke-width:3}
+.orb{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e3c27d,var(--br));transform:scale(.8);display:grid;place-items:center;color:#1a1409;font:600 15px var(--sans)}
+#cue{font:400 28px var(--serif);min-height:36px;margin:0}
+#sub{color:var(--mu);min-height:50px;max-width:34ch;margin:6px 0 14px}
+#cnt{color:var(--gd);font:400 20px var(--serif);min-height:28px}
+.note{background:var(--sf);border-left:2px solid var(--br);padding:12px 16px;margin:0 0 18px;font-size:14px;color:var(--mu)}
+details p.src{color:var(--mu);font-size:13px;margin-top:6px}
+.au{display:grid;grid-template-columns:1fr 150px 24px;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--ln);font-size:15px}
+.au input{width:100%;accent-color:var(--gd)}
+.au output{color:var(--gd);text-align:right}
+h2.sub{margin-top:34px}
+@media(max-width:520px){.au{grid-template-columns:1fr 110px 20px}.week{margin-left:0;width:100%}.dot{width:30px;height:30px}.meter{grid-template-columns:90px 1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>Magnetic Mindset &amp; Presence OS</h1>
+<p>Daily micro-habits and live scenario practice for calm, warm, unshakeable presence.</p>
+<div class="streak"><b id="streakN">0</b><span id="streakT">day streak</span><div class="week" id="week" aria-label="Last 7 days"></div></div>
+</div></header>
+<nav><div class="wrap" role="tablist" id="tabs">
+<button role="tab" aria-selected="true" data-t="today">Today</button>
+<button role="tab" aria-selected="false" data-t="sim">Scenario simulator</button>
+<button role="tab" aria-selected="false" data-t="vault">Vault of principles</button>
+<button role="tab" aria-selected="false" data-t="sci">Attraction science</button>
+</div></nav>
+<main class="wrap">
+<section id="today">
+<h2>Daily calibration</h2>
+<p class="lead">Check off each habit as you practice it. A day counts toward your streak when every pillar has at least two habits done.</p>
+<div id="pillars"></div>
+<div class="meta"><span id="sum"></span><span id="gcount"></span><button class="btn ghost" id="reset">Reset today</button></div>
+</section>
+<section id="sim" hidden>
+<h2>Scenario simulator</h2>
+<p class="lead">Pick a situation, write what you would actually say, and get a frame check on your wording.</p>
+<div class="chips" id="scChips"></div>
+<p class="say" id="scSay"></p>
+<p class="ctx" id="scCtx"></p>
+<label for="ans" class="ctx">Your response</label>
+<textarea id="ans" placeholder="Type your reply exactly as you would say it out loud..."></textarea>
+<div class="row"><button class="btn" id="analyze">Analyze response</button><button class="btn ghost" id="clr">Clear</button></div>
+<div id="out" aria-live="polite"></div>
+</section>
+<section id="vault" hidden>
+<h2>Vault of principles</h2>
+<p class="lead">Search or filter, then open a principle to see the practice drill.</p>
+<input type="search" id="q" placeholder="Search principles (try: pause, tease, voice)" aria-label="Search principles">
+<div class="chips" id="cats"></div>
+<div id="list"></div>
+</section>
+<section id="sci" hidden>
+<h2>Attraction science</h2>
+<p class="lead">What research says women tend to value in a long-term partner, a sexual partner and a sperm donor, with the strength of the evidence and a way to train each trait.</p>
+<div class="note">Read these as averages, not rules. Findings come mostly from Western, university-age samples, effect sizes are often modest, and what people say they want often differs from who they actually feel drawn to. Individuals vary widely. Traits work through real warmth and respect; faking them is easy to spot and backfires.</div>
+<div class="chips" id="sciChips"></div>
+<div id="sciList"></div>
+<h2 class="sub">Your appeal audit</h2>
+<p class="lead">Rate yourself honestly from 1 (weak) to 5 (strong). Your three lowest trainable areas appear below.</p>
+<div id="audit"></div>
+<div class="res n" id="focus" aria-live="polite"></div>
+</section>
+</main>
+<button class="fab" id="gBtn">Ground in 10 seconds</button>
+<div class="ov" id="gr" hidden role="dialog" aria-modal="true" aria-label="Pre-social grounding">
+<p id="cue">Ready when you are</p>
+<p id="sub">Ten seconds to drop tension, lower your pitch, and slow down before you walk in.</p>
+<div class="stage">
+<svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" stroke="#332b21"/><circle id="ring" cx="60" cy="60" r="54" stroke="#cfaa62" stroke-linecap="round" stroke-dasharray="339.29" stroke-dashoffset="339.29"/></svg>
+<div class="orb" id="orb"><span id="orbT">Breathe</span></div>
+</div>
+<div id="cnt"></div>
+<div class="row"><button class="btn" id="gGo">Begin</button><button class="btn ghost" id="gClose">Close</button></div>
+</div>
+<script>
+(function(){
+"use strict";
+var $=function(s){return document.querySelector(s)};
+var KEY="mmpos.v1";
+var state={days:{}};
+function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&typeof o.days==="object")state=o}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function dk(d){var m=d.getMonth()+1,x=d.getDate();return d.getFullYear()+"-"+(m<10?"0":"")+m+"-"+(x<10?"0":"")+x}
+function today(){var k=dk(new Date());if(!state.days[k])state.days[k]={checks:{},grounded:0};if(!state.days[k].checks)state.days[k].checks={};return state.days[k]}
+var P=[
+{n:"Vocal Dynamics",d:"Resonation, cadence, and the discipline of slowing down.",h:[["v1","Speak one notch slower than feels natural"],["v2","Let your pitch fall at the end of statements"],["v3","Hum low in your chest before your first call or meeting"]]},
+{n:"Body Language and Eye Contact",d:"Open posture, steady gaze, relaxed composure.",h:[["b1","Keep shoulders down and chest open while standing and sitting"],["b2","Shift your gaze horizontally and hold it a beat longer than usual"],["b3","Move at 80% speed: no fidgeting, no rushed gestures"]]},
+{n:"Internal State and Outcome Independence",d:"Non-reactivity and comfort with silence.",h:[["i1","Pause for one full breath before answering a challenging remark"],["i2","Let one silence stretch without filling it"],["i3","Go into one interaction wanting nothing from it except to enjoy it"]]}];
+function done(k){var d=state.days[k];if(!d||!d.checks)return false;return P.every(function(p){return p.h.filter(function(h){return d.checks[h[0]]}).length>=2})}
+function streak(){var d=new Date();if(!done(dk(d)))d.setDate(d.getDate()-1);var n=0;while(done(dk(d))){n++;d.setDate(d.getDate()-1)}return n}
+function renderToday(){
+var t=today(),box=$("#pillars"),html="",total=0;
+P.forEach(function(p){
+var c=p.h.filter(function(h){return t.checks[h[0]]}).length;total+=c;
+html+='<div class="pillar"><h3>'+p.n+'<small class="'+(c>=2?"full":"")+'">'+c+' of 3</small></h3><p>'+p.d+'</p>';
+p.h.forEach(function(h){html+='<label class="chk"><input type="checkbox" data-id="'+h[0]+'"'+(t.checks[h[0]]?" checked":"")+'><span>'+h[1]+'</span></label>'});
+html+='</div>'});
+box.innerHTML=html;
+$("#sum").textContent=total+" of 9 habits done today";
+$("#gcount").textContent=t.grounded?"Grounded "+t.grounded+(t.grounded===1?" time":" times")+" today":"";
+renderStreak()}
+function renderStreak(){
+var n=streak();$("#streakN").textContent=n;$("#streakT").textContent=n===1?"day streak":"day streak";
+var w=$("#week");w.innerHTML="";
+for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var e=document.createElement("div");
+e.className="dot"+(done(dk(d))?" on":"")+(i===0?" today":"");
+e.textContent="SMTWTFS".charAt(d.getDay());e.title=dk(d);w.appendChild(e)}}
+$("#pillars").addEventListener("change",function(e){
+var id=e.target.getAttribute("data-id");if(!id)return;
+var t=today();if(e.target.checked)t.checks[id]=true;else delete t.checks[id];
+save();renderToday();
+var again=document.querySelector('[data-id="'+id+'"]');if(again)again.focus()});
+$("#reset").addEventListener("click",function(){if(confirm("Clear all of today's checks?")){var k=dk(new Date());state.days[k]={checks:{},grounded:0};save();renderToday()}});
+
+/* Tabs */
+$("#tabs").addEventListener("click",function(e){
+var b=e.target.closest("button");if(!b)return;
+[].forEach.call(document.querySelectorAll("#tabs button"),function(x){var on=x===b;x.setAttribute("aria-selected",on);$("#"+x.getAttribute("data-t")).hidden=!on});
+window.scrollTo(0,0)});
+
+/* Simulator */
+var S=[
+{t:"Playful tease",say:"You talk a lot for someone who just got here.",ctx:"Light banter from a colleague in front of others. A test of your sense of humor.",m:["Guilty. I save the good stuff for people who keep up.","Fair. I'm warming up. Want the long version?","Ha, I like to make an entrance. What did I miss?"]},
+{t:"Frame check",say:"Are you sure you're the right person to be leading this?",ctx:"Said with a raised eyebrow in a meeting. They want to see if you wobble.",m:["Good question. Here's why I'm confident, and I'm open to your input on the plan.","I am. Tell me what concerns you and we'll look at it together.","Yes. Let's walk through the plan and you can poke holes in it."]},
+{t:"Interruption and status test",say:"Hold on, let me stop you. That's not how we do it here.",ctx:"Cut off mid-sentence. How you respond tells the room who holds the frame.",m:["Happy to hear how you do it. Then I'll finish my point.","Noted. Give me ten seconds to finish, then I'm all ears.","Interesting. Walk me through your approach, then I'll share mine."]},
+{t:"Silence under pressure",say:"Hmm. Interesting. I'm not sure everyone here agrees with you.",ctx:"You shared an opinion and the room went quiet. Your next move sets your aura.",m:["That's fine. I'd like to hear where people land.","Probably not everyone. What's your take?","Could be. I'm curious what the other angles are."]},
+{t:"High-status banter",say:"Nice jacket. Trying to impress someone?",ctx:"A friendly jab at a social event. Match the playfulness without justifying yourself.",m:["Obviously. How's it working so far?","Just you. Mission accomplished.","Always. It's a full-time job."]},
+{t:"Compliance test",say:"Can you grab me a coffee? You're not busy, right?",ctx:"A casual request that quietly tests whether your time is negotiable.",m:["Busy enough that I can't right now, but there's a good cafe on the corner.","Not today. Happy to point you to the best one nearby.","I'm in the middle of something. Maybe next time."]}];
+var cur=0;
+function renderSc(){
+var c=$("#scChips");c.innerHTML="";
+S.forEach(function(s,i){var b=document.createElement("button");b.className="chip";b.textContent=s.t;b.setAttribute("aria-pressed",i===cur);b.addEventListener("click",function(){cur=i;$("#ans").value="";$("#out").innerHTML="";renderSc()});c.appendChild(b)});
+$("#scSay").textContent="\u201C"+S[cur].say+"\u201D";$("#scCtx").textContent=S[cur].ctx}
+var RX=[
+[/\b(how dare|what'?s your problem|shut up|calm down|excuse me|whatever|ridiculous|offended|rude|stupid|idiot|wrong|pathetic|jerk)\b/,"Combative or dismissive wording signals you felt threatened."],
+[/\b(i am not|i'm not|i didn'?t|i never|that'?s not (true|what|fair)|not true)\b/,"Denying or correcting treats the comment as a real threat."],
+[/\b(why would you|why do you|who are you to|don'?t (you )?(ever|talk|tell)|you always|you never|how can you)\b/,"Accusatory framing hands the other person control of the exchange."],
+[/\b(but|actually|technically|in fact)\b/,"Counter-explaining sounds like defending your position."],
+[/!{2,}|\?!|[A-Z]{4,}/,"Heavy emphasis (stacked punctuation or shouting) leaks emotion."]];
+var EX=[
+[/\b(sorry|apologi[sz]e|my bad|my fault|forgive me)\b/,"Apologizing when no offense was given gives away status."],
+[/\b(please|if that'?s (ok|okay|alright|fine)|if you don'?t mind|hope that'?s|is that (ok|okay|alright)|does that (work|make sense)|if you want)\b/,"Asking permission or approval signals dependence on their reaction."],
+[/\b(i guess|maybe|kind of|sort of|probably|um+|uh+|i think i|just)\b/,"Hedging words soften your message until it disappears."],
+[/\b(you'?re (so )?(right|amazing|great|the best)|of course|absolutely|definitely|happy to|anything you|whatever you|right away|no problem|sure thing)\b/,"Rushing to comply or flatter reads as seeking approval."],
+[/\b(thank you so much|thanks so much|really appreciate|so grateful)\b/,"Over-thanking inflates the other person's status."]];
+var HX=[
+[/\b(ha(ha)*|haha+|lol|fair (point|enough)|good (catch|one|point|question)|guilty|noted|you may be right|touch[e\u00e9]|i'?ll (take|allow|give you)|love (that|it)|that'?s (fun|funny|fair|interesting|a good)|obviously|always)\b/,"Playful or amused acceptance shows the comment did not land as a threat."],
+[/\b(tell me more|curious|what (makes|made|do you|about|would)|how so|walk me through|help me understand|interesting|what'?s your take)\b/,"Curious questions turn pressure into an invitation."],
+[/\b(let'?s|here'?s (what|how|my)|my (view|take|plan)|i'?ll (handle|take care|decide|do|keep|finish|share)|i see it|the plan|i am|i'?m (confident|in the middle|busy))\b/,"Calm, declarative leadership language holds the frame without force."]];
+function hits(tbl,txt,raw){var out=[];tbl.forEach(function(p){if(p[0].test(raw?raw:txt))out.push(p[1])});return out}
+function analyze(){
+var raw=$("#ans").value.trim().replace(/[\u2018\u2019]/g,"'"),out=$("#out");
+if(!raw){out.innerHTML='<div class="res n"><p>Write a response first, then analyze it.</p></div>';return}
+var low=raw.toLowerCase(),wc=raw.split(/\s+/).length;
+if(wc<2){out.innerHTML='<div class="res n"><p>Try a full sentence. One word gives too little to calibrate.</p></div>';return}
+var rH=hits(RX,low),eH=hits(EX,low),hH=hits(HX,low);
+var rs=hits(RX.slice(0,4),low).length+(RX[4][0].test(raw)?1:0);
+rH=[];RX.forEach(function(p,i){if(i<4?p[0].test(low):p[0].test(raw))rH.push(p[1])});rs=rH.length;
+var qm=(raw.match(/\?/g)||[]).length;
+if(qm>=2)eH.push("Several questions in a row can read as seeking reassurance.");
+var es=eH.length,hs=hH.length,notes=[];
+if(rs===0&&es===0&&wc>=3&&wc<=30){hs++;notes.push("Short and unhurried: brevity signals you are not scrambling.")}
+if(wc>40){notes.push("At "+wc+" words you are over-explaining. High-frame replies are usually under 25.");hs=Math.max(0,hs-1)}
+var v,cls,title,sum,move;
+if(rs>0&&rs>=es&&rs>=hs){v="r";cls="r";title="Reactive or defensive";sum="Your reply treats the comment as an attack to be answered. That hands the other person the frame.";move="Drop the rebuttal. Pause, smile slightly, agree with the playful part, then redirect with a question or a calm statement."}
+else if(es>0&&es>rs&&es>=hs){v="e";cls="e";title="Overly eager or people-pleasing";sum="Your reply works to be liked or to smooth things over. That lowers your perceived status.";move="Remove apologies, hedges, and permission-seeking. State your position as a fact, then stop talking and let the silence work."}
+else if(hs>0){v="h";cls="";title="High-frame, playful, calm";sum="This reads as relaxed and secure. You accepted the moment without needing to win it."+(rs||es?" Trim the small slips noted below to make it cleaner.":"");move="Keep this. Next level: deliver it 20% slower, with a one-beat pause before you begin and a low, falling pitch on the last word."}
+else{v="n";cls="n";title="Neutral: not yet magnetic";sum="Nothing reactive or needy, but nothing playful or leading either.";move="Add one ingredient: amusement (agree and amplify), curiosity (a short question), or leadership (a calm statement of what you will do)."}
+var pts=[];
+if(v==="r")pts=rH;else if(v==="e")pts=eH;else if(v==="h")pts=hH.concat(rH,eH);else pts=notes.length?[]:["No strong signals either way."];
+pts=pts.concat(notes);
+if(v==="r"||v==="e"){var other=v==="r"?eH:rH;if(other.length)pts=pts.concat(other)}
+var bar=function(l,n,c){return "<span>"+l+"</span><div class='bar'><i style='background:"+c+";width:"+Math.min(100,n*34)+"%'></i></div>"};
+var m=S[cur].m[Math.floor(Math.random()*S[cur].m.length)];
+var h='<div class="res '+cls+'"><h3></h3><p class="sm"></p><div class="meter">'+bar("Reactive",rs,"var(--rx)")+bar("Eager",es,"var(--ex)")+bar("High-frame",hs,"var(--gd)")+'</div><h4>What I noticed</h4><ul>';
+pts.forEach(function(){h+="<li></li>"});
+h+='</ul><h4>Calibration move</h4><p class="mv"></p><h4>A high-frame version</h4><p class="model"></p></div>';
+out.innerHTML=h;
+var r=out.firstChild;r.querySelector("h3").textContent=title;r.querySelector(".sm").textContent=sum;
+[].forEach.call(r.querySelectorAll("li"),function(li,i){li.textContent=pts[i]});
+r.querySelector(".mv").textContent=move;r.querySelector(".model").textContent="\u201C"+m+"\u201D";
+r.scrollIntoView({behavior:"smooth",block:"nearest"})}
+$("#analyze").addEventListener("click",analyze);
+$("#clr").addEventListener("click",function(){$("#ans").value="";$("#out").innerHTML="";$("#ans").focus()});
+$("#ans").addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&e.key==="Enter")analyze()});
+
+/* Vault */
+var V=[
+["The Power of the Pause","Voice","A one-beat pause before you answer turns a reaction into a decision. It signals you are choosing your words, not defending yourself.","Before replying to any question today, inhale quietly and count one. Add a second beat when the question is a challenge."],
+["Slowing Down Time","Body","Speed communicates urgency, and urgency communicates need. Slower movement and speech make the room adjust to your tempo.","Walk into your next room at 80% of your normal pace. Set your phone down slowly. Turn your head rather than snapping it."],
+["Agree and Amplify","Conversation","When someone teases you, agree with the joke and take it one step further. There is nothing to attack when you are already on board.","Next time you are teased, start with 'Guilty' or 'Fair' and add one playful exaggeration."],
+["Downward Inflection","Voice","Statements that end with a falling pitch sound certain. Rising pitch turns statements into requests for approval.","Record yourself saying three statements. Let the last word drop in pitch and listen back."],
+["Resonance Over Volume","Voice","Presence comes from chest resonance, not loudness. A lower, warmer tone carries further with less effort.","Hum on an 'mmm' for 5 seconds until you feel your sternum vibrate, then speak your first sentence from that spot."],
+["Horizontal Gaze Shifts","Body","Moving your eyes sideways, not down, keeps contact relaxed. Dropping your gaze reads as submission, darting reads as nerves.","In conversation, shift between the person's two eyes and the bridge of the nose. Look away sideways, then return."],
+["Open Posture","Body","Uncrossed arms, dropped shoulders, and an uncollapsed chest tell the nervous system there is no threat. Others mirror it.","Set a calendar reminder to check your shoulders three times a day. Exhale and let them fall."],
+["Outcome Independence","Mindset","You are magnetic when you enjoy the interaction but do not need it to go a particular way. Neediness repels, ease attracts.","Before any conversation, name the outcome you are gripping, then decide you will be fine either way."],
+["Comfort With Silence","Mindset","The person who can sit in silence without squirming holds the frame. Silence is information, not an emergency.","In your next conversation, let one silence run for three full seconds after you finish speaking."],
+["Frame Is Not Force","Frame","Frame control is calm certainty about your own values and boundaries, not dominance. You decide how you respond, whatever they do.","When tested, ask yourself: what would I do if I had nothing to prove? Do that."],
+["Curiosity Beats Defense","Conversation","A short curious question ('How so?') disarms a challenge and shifts the burden of explanation to the other person.","Prepare three go-to questions: 'How so?', 'What makes you say that?', 'Tell me more.'"],
+["Warmth Before Authority","Frame","People grant authority to those who make them feel safe and seen. Pair a relaxed smile and a name with firm content.","Open your next three conversations with a sincere, specific observation about the other person."],
+["Say No Without Explaining","Frame","Long justifications invite negotiation. A brief, friendly no, with an alternative if you like, keeps your time yours.","Practice: 'I can't make that work, but good luck with it.' Say it once and stop."]];
+var cat="All";
+function renderVault(){
+var q=$("#q").value.trim().toLowerCase(),cats=["All"],i;
+V.forEach(function(v){if(cats.indexOf(v[1])<0)cats.push(v[1])});
+var cb=$("#cats");cb.innerHTML="";
+cats.forEach(function(c){var b=document.createElement("button");b.className="chip";b.textContent=c;b.setAttribute("aria-pressed",c===cat);b.addEventListener("click",function(){cat=c;renderVault()});cb.appendChild(b)});
+var box=$("#list");box.innerHTML="";var n=0;
+V.forEach(function(v){
+if(cat!=="All"&&v[1]!==cat)return;
+if(q&&(v[0]+" "+v[1]+" "+v[2]+" "+v[3]).toLowerCase().indexOf(q)<0)return;
+n++;var d=document.createElement("details"),s=document.createElement("summary"),sm=document.createElement("small"),p1=document.createElement("p"),p2=document.createElement("p"),bb=document.createElement("b");
+s.appendChild(document.createTextNode(v[0]));sm.textContent=v[1];s.appendChild(sm);
+p1.textContent=v[2];p2.className="dr";bb.textContent="Practice: ";p2.appendChild(bb);p2.appendChild(document.createTextNode(v[3]));
+d.appendChild(s);d.appendChild(p1);d.appendChild(p2);box.appendChild(d)});
+if(!n){box.innerHTML='<p class="empty">No principles match. Clear the search or choose All.</p>'}}
+$("#q").addEventListener("input",renderVault);
+
+/* Grounding engine */
+var gr=$("#gr"),orb=$("#orb"),ring=$("#ring"),C=339.29,raf=0,tm=0,t0=0,running=false;
+function setOrb(sc,sec,txt){orb.style.transition="transform "+sec+"s ease-in-out";orb.style.transform="scale("+sc+")";$("#orbT").textContent=txt}
+function resetG(msg){
+cancelAnimationFrame(raf);clearTimeout(tm);running=false;
+orb.style.transition="none";orb.style.transform="scale(.8)";$("#orbT").textContent="Breathe";
+ring.style.strokeDashoffset=C;$("#cnt").textContent="";
+$("#cue").textContent=msg||"Ready when you are";
+$("#sub").textContent="Ten seconds to drop tension, lower your pitch, and slow down before you walk in.";
+$("#gGo").textContent="Begin"}
+function startG(){
+if(running)return;resetG();running=true;$("#gGo").textContent="Restart";
+void orb.offsetWidth;setOrb(1.45,4,"Inhale");
+tm=setTimeout(function(){setOrb(.8,6,"Exhale")},4000);
+t0=performance.now();var last=-1;
+var cues=[["Drop your shoulders","Exhale and let the weight fall from your neck, jaw, and hands."],["Lower your pitch","Hum softly in your chest. Feel your voice settle lower."],["Slow everything down","Soften your eyes. Move and speak at 80% speed."]];
+function tick(now){
+var e=(now-t0)/1000;
+if(e>=10){
+ring.style.strokeDashoffset=0;running=false;
+$("#cue").textContent="You are ready";$("#sub").textContent="Walk in slowly. Let them adjust to your pace.";$("#cnt").textContent="";$("#gGo").textContent="Go again";
+var t=today();t.grounded=(t.grounded||0)+1;save();renderToday();return}
+ring.style.strokeDashoffset=C*(1-e/10);
+var stage=e<3.4?0:e<6.7?1:2;
+if(stage!==last){last=stage;$("#cue").textContent=cues[stage][0];$("#sub").textContent=cues[stage][1]}
+$("#cnt").textContent=Math.ceil(10-e)+"s";
+raf=requestAnimationFrame(tick)}
+raf=requestAnimationFrame(tick)}
+function openG(){resetG();gr.hidden=false;$("#gGo").focus()}
+function closeG(){resetG();gr.hidden=true;$("#gBtn").focus()}
+$("#gBtn").addEventListener("click",openG);
+$("#gGo").addEventListener("click",function(){if(running)resetG();startG()});
+$("#gClose").addEventListener("click",closeG);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!gr.hidden)closeG()});
+document.addEventListener("visibilitychange",function(){if(!document.hidden){renderToday()}});
+
+/* Attraction science */
+var A=[
+["Kindness and emotional responsiveness","lsd","Consistently ranked at or near the top of what women want in a long-term partner across cultures. Partners who feel understood and cared for also report higher desire.","Strong","Buss 1989 (37 cultures); Li et al. 2002; Birnbaum and Reis on perceived responsiveness","Reflect their feeling in one sentence before offering advice. Remember one detail from last time and bring it up."],
+["Chemistry from interaction","lsd","Ideal-partner lists poorly predict who people actually click with in person. Attraction is built in the moment through mutual attention, ease and responsiveness.","Strong","Eastwick and Finkel 2008 (speed dating)","Stay curious: ask one follow-up question per answer and show visible interest. Be present rather than performing."],
+["Emotional stability","ld","Low reactivity and steadiness predict relationship satisfaction and are valued in long-term partners and in donors' perceived temperament.","Strong","Malouff et al. 2010 meta-analysis; Karney and Bradbury","Use the daily Internal State habits. Pause before reacting, and repair quickly after friction."],
+["Humor production","ls","Women rate men who make them laugh as more attractive, and humor production tracks verbal intelligence. Appreciating humor matters less than creating it.","Moderate to strong","Bressler et al. 2006; Greengross and Miller 2011","Practice observational, warm teasing. Aim to amuse the person, not to impress them."],
+["Calm confidence with warmth","ls","Dominant behavior raises attraction mainly when combined with agreeableness. Dominance without warmth lowers appeal and perceived safety.","Moderate","Sadalla et al. 1987; Jensen-Campbell et al. 1995","Slow your speech, hold eye contact, and decide without bulldozing. Pair every firm statement with real interest in their view."],
+["Ambition and competence","ld","Women on average value ambition, status and earning prospects more than men do, a modest but consistent difference that shrinks in more gender-equal societies.","Moderate","Buss 1989; Eagly and Wood 1999","Pursue a visible long-term goal and talk about it with enthusiasm, not boasting."],
+["Intelligence and verbal fluency","ld","Ranked highly for long-term mates, and often the main screen for donors. It shows through conversation more than credentials.","Moderate to strong","Buss 1989; cryobank profile data","Read widely, learn to explain ideas simply, and ask good questions."],
+["Height","lsd","Women on average prefer partners taller than themselves, and height is among the most common donor filters. The effect is mostly relative and varies by person.","Moderate","Stulp et al. 2013; cryobank profile data","Height is fixed. Train posture, presence and vertical lines in your clothing."],
+["Fitness and upper-body shape","ls","A strong, V-shaped torso and upper-body strength are associated with attractiveness and perceived formidability. Strength matters more in short-term contexts.","Moderate","Hughes and Gallup 2003; Sell et al. 2017","Lift three times a week: rows, presses, squats, deadlifts. Walk daily and keep body fat moderate."],
+["Face, skin and grooming","ls","Healthy skin, facial averageness and good grooming predict attraction more reliably than extreme masculinity. Preferences for masculine faces are small and vary by person and cycle phase, which is still debated.","Mixed","Jones et al. 2018; Gildersleeve et al. 2014","Prioritize sleep, skincare, a flattering haircut, tidy facial hair and well-fitted clothes."],
+["Voice","ls","Lower voice pitch tends to be rated more attractive, especially for short-term interest, but findings are inconsistent and tone and warmth matter as much.","Mixed","Puts 2005; Apicella et al. 2007","Practice chest resonance, slower pacing and a falling pitch at sentence ends. Do not force a fake low voice."],
+["Scent and hygiene","ls","Clean, natural body scent is a common attraction cue. Heavy cologne can backfire.","Weak to moderate","Havlicek and Roberts reviews","Shower daily, wash clothes after wearing, and use a light scent applied sparingly."],
+["Social proof","ls","Women often rate men as more attractive when other women appear to like them, an effect called mate copying.","Moderate","Hill and Buss 2008; Jones et al. 2007","Be warm and well connected in real friendships and group settings. Do not stage it."],
+["Sexual attunement","ls","Satisfaction rises with open communication, attention to the partner's pleasure and enthusiastic consent. These matter more than technique or stamina.","Moderate to strong","Frederick et al. 2018; Mallory et al. 2019","Ask what they enjoy, slow down, notice their responses and check in. Treat a no or a hesitant yes as a stop."],
+["Donor health and lifestyle","d","Semen quality is linked to smoking, obesity, heavy alcohol use, poor sleep and heat exposure, and sperm concentration has fallen in Western countries. Clinics also screen for infections, genetic carrier status and family history.","Moderate","Levine et al. 2017 meta-analysis; clinical screening guidelines","Do not smoke, sleep seven to nine hours, exercise, limit alcohol, avoid prolonged heat and eat a Mediterranean-style diet."],
+["What donor-seekers filter on","d","Cryobank catalogs show buyers typically sort by height, education, health history, ethnicity or physical resemblance, personality and willingness to be contactable later. Many value kindness and shared interests in profile essays.","Descriptive","Cryobank profile data; surveys of recipients","Know your own medical and family history thoroughly. Regulations differ by country, so check local law and clinic standards."]];
+var af="all";
+var AF=[["all","All"],["l","Long-term partner"],["s","Sexual partner"],["d","Sperm donor"]];
+function renderSci(){
+var cb=$("#sciChips");cb.innerHTML="";
+AF.forEach(function(f){var b=document.createElement("button");b.className="chip";b.textContent=f[1];b.setAttribute("aria-pressed",f[0]===af);b.addEventListener("click",function(){af=f[0];renderSci()});cb.appendChild(b)});
+var h="";
+A.forEach(function(a){if(af!=="all"&&a[1].indexOf(af)<0)return;
+h+="<details><summary>"+a[0]+"<small>"+a[3]+"</small></summary><p>"+a[2]+'</p><p class="src">Sources: '+a[4]+'</p><p class="dr"><b>Train it: </b>'+a[5]+"</p></details>"});
+$("#sciList").innerHTML=h}
+var AU=[["warm","Warmth and responsiveness","Reflect feelings first. Ask a follow-up question in every conversation today."],["humor","Humor and playfulness","Write down one funny observation daily and share it with someone."],["calm","Calm confidence","Slow your speech by a notch and hold a pause before answering."],["amb","Ambition and direction","Pick one goal and take one visible step on it this week."],["fit","Strength and fitness","Book three strength sessions this week and walk 8,000 steps daily."],["groom","Grooming and style","Get a fitted haircut and clothes tailored to your shoulders and waist."],["voice","Voice and resonance","Hum, then read aloud for five minutes daily with falling inflection."],["post","Posture and body language","Check shoulders and chin three times a day. Stand tall and open."],["stab","Emotional stability","Practice one breath before reacting and name the feeling silently."],["sex","Sexual attunement and consent","Practice asking and listening. Read about communication in intimacy."],["hlth","Sleep and health habits","Fix a bedtime, skip smoking, limit alcohol and eat whole foods."]];
+function renderAudit(){
+state.audit=state.audit||{};var box=$("#audit");box.innerHTML="";
+AU.forEach(function(a){
+var r=document.createElement("div");r.className="au";
+var l=document.createElement("label");l.textContent=a[1];l.setAttribute("for","au_"+a[0]);
+var i=document.createElement("input");i.type="range";i.min=1;i.max=5;i.step=1;i.id="au_"+a[0];i.value=state.audit[a[0]]||3;
+var o=document.createElement("output");o.textContent=state.audit[a[0]]||"-";
+i.addEventListener("input",function(){state.audit[a[0]]=Number(i.value);o.textContent=i.value;save();renderFocus()});
+r.appendChild(l);r.appendChild(i);r.appendChild(o);box.appendChild(r)});
+renderFocus()}
+function renderFocus(){
+var rated=AU.filter(function(a){return state.audit[a[0]]});var f=$("#focus");
+if(rated.length<4){f.innerHTML="<p>Rate at least four areas to see your focus list.</p>";return}
+rated.sort(function(x,y){return state.audit[x[0]]-state.audit[y[0]]});
+var h="<h3>Focus next</h3><ul>";
+rated.slice(0,3).forEach(function(a){h+="<li><b>"+a[1]+"</b> (rated "+state.audit[a[0]]+"): "+a[2]+"</li>"});
+f.innerHTML=h+"</ul>"}
+
+load();renderToday();renderSc();renderVault();renderSci();renderAudit();
+})();
+</script>
+</body>
+</html>
